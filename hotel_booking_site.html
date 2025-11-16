@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HotelBooking - Reserva tu Hotel</title>
+    <style>
+        /* Importar fuente Poppins */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        /* Estilos Generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        /* Encabezado */
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        /* Sección Hero */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                        url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200') center/cover;
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+        }
+
+        /* Formulario de Búsqueda */
+        .search-box {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            max-width: 900px;
+        }
+
+        .search-box input,
+        .search-box select {
+            flex: 1;
+            min-width: 150px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .search-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .search-btn:hover {
+            background: #5568d3;
+        }
+
+        /* Sección de Hoteles */
+        .hotels-section {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 32px;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #333;
+        }
+
+        .hotels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        /* Tarjeta de Hotel */
+        .hotel-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .hotel-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 25px rgba(0,0,0,0.15);
+        }
+
+        .hotel-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .hotel-info {
+            padding: 20px;
+        }
+
+        .hotel-name {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .hotel-location {
+            color: #666;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .rating {
+            color: #ffa500;
+            margin-bottom: 15px;
+        }
+
+        .hotel-price {
+            font-size: 24px;
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .book-btn {
+            width: 100%;
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .book-btn:hover {
+            background: #5568d3;
+        }
+
+        /* Footer */
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 50px;
+        }
+
+        /* Modal de Reserva */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .modal h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .close-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Encabezado -->
+    <header>
+        <nav>
+            <div class="logo">🏨 HotelBooking</div>
+            <div class="nav-links">
+                <a href="#home">Inicio</a>
+                <a href="#hotels">Hoteles</a>
+                <a href="#about">Nosotros</a>
+                <a href="#contact">Contacto</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Sección Hero -->
+    <section class="hero" id="home">
+        <h1>Encuentra tu Hotel Perfecto</h1>
+        <p>Los mejores hoteles al mejor precio</p>
+        
+        <div class="search-box">
+            <input type="text" placeholder="Destino" id="destination">
+            <input type="date" placeholder="Check-in" id="checkin">
+            <input type="date" placeholder="Check-out" id="checkout">
+            <select id="guests">
+                <option value="">Huéspedes</option>
+                <option value="1">1 persona</option>
+                <option value="2">2 personas</option>
+                <option value="3">3 personas</option>
+                <option value="4">4+ personas</option>
+            </select>
+            <button class="search-btn" onclick="searchHotels()">Buscar</button>
+        </div>
+    </section>
+
+    <!-- Sección de Hoteles -->
+    <section class="hotels-section" id="hotels">
+        <h2 class="section-title">Hoteles Destacados</h2>
+        <div class="hotels-grid">
+            <!-- Hotel 1 -->
+            <div class="hotel-card">
+                <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=400" alt="Hotel Paraíso" class="hotel-image">
+                <div class="hotel-info">
+                    <div class="hotel-name">Hotel Paraíso</div>
+                    <div class="hotel-location">📍 Cancún, México</div>
+                    <div class="rating">⭐⭐⭐⭐⭐ (4.8)</div>
+                    <div class="hotel-price">$150 / noche</div>
+                    <button class="book-btn" onclick="bookHotel('Hotel Paraíso')">Reservar Ahora</button>
+                </div>
+            </div>
+
+            <!-- Hotel 2 -->
+            <div class="hotel-card">
+                <img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=400" alt="Resort Playa Azul" class="hotel-image">
+                <div class="hotel-info">
+                    <div class="hotel-name">Resort Playa Azul</div>
+                    <div class="hotel-location">📍 Punta Cana, Rep. Dominicana</div>
+                    <div class="rating">⭐⭐⭐⭐⭐ (4.9)</div>
+                    <div class="hotel-price">$200 / noche</div>
+                    <button class="book-btn" onclick="bookHotel('Resort Playa Azul')">Reservar Ahora</button>
+                </div>
+            </div>
+
+            <!-- Hotel 3 -->
+            <div class="hotel-card">
+                <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=400" alt="Hotel Montaña Vista" class="hotel-image">
+                <div class="hotel-info">
+                    <div class="hotel-name">Hotel Montaña Vista</div>
+                    <div class="hotel-location">📍 Bariloche, Argentina</div>
+                    <div class="rating">⭐⭐⭐⭐ (4.6)</div>
+                    <div class="hotel-price">$120 / noche</div>
+                    <button class="book-btn" onclick="bookHotel('Hotel Montaña Vista')">Reservar Ahora</button>
+                </div>
+            </div>
+
+            <!-- Hotel 4 -->
+            <div class="hotel-card">
+                <img src="https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=400" alt="Grand Hotel City" class="hotel-image">
+                <div class="hotel-info">
+                    <div class="hotel-name">Grand Hotel City</div>
+                    <div class="hotel-location">📍 Buenos Aires, Argentina</div>
+                    <div class="rating">⭐⭐⭐⭐⭐ (4.7)</div>
+                    <div class="hotel-price">$180 / noche</div>
+                    <button class="book-btn" onclick="bookHotel('Grand Hotel City')">Reservar Ahora</button>
+                </div>
+            </div>
+
+            <!-- Hotel 5 -->
+            <div class="hotel-card">
+                <img src="https://images.unsplash.com/photo-1549294413-26f195200c16?w=400" alt="Hotel Costa Sol" class="hotel-image">
+                <div class="hotel-info">
+                    <div class="hotel-name">Hotel Costa Sol</div>
+                    <div class="hotel-location">📍 Miami, Estados Unidos</div>
+                    <div class="rating">⭐⭐⭐⭐ (4.5)</div>
+                    <div class="hotel-price">$220 / noche</div>
+                    <button class="book-btn" onclick="bookHotel('Hotel Costa Sol')">Reservar Ahora</button>
+                </div>
+            </div>
+
+            <!-- Hotel 6 -->
+            <div class="hotel-card">
+                <img src="https://images.unsplash.com/photo-1596436889106-be35e843f974?w=400" alt="Hotel Colonial" class="hotel-image">
+                <div class="hotel-info">
+                    <div class="hotel-name">Hotel Colonial</div>
+                    <div class="hotel-location">📍 Cartagena, Colombia</div>
+                    <div class="rating">⭐⭐⭐⭐⭐ (4.9)</div>
+                    <div class="hotel-price">$140 / noche</div>
+                    <button class="book-btn" onclick="bookHotel('Hotel Colonial')">Reservar Ahora</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal de Confirmación -->
+    <div class="modal" id="bookingModal">
+        <div class="modal-content">
+            <h2>¡Reserva Confirmada! ✅</h2>
+            <p id="confirmationMessage"></p>
+            <button class="close-btn" onclick="closeModal()">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 HotelBooking. Todos los derechos reservados.</p>
+        <p>Contacto: info@hotelbooking.com | Tel: +503 8978 9973</p>
+    </footer>
+
+    <script>
+        // Función para buscar hoteles
+        function searchHotels() {
+            const destination = document.getElementById('destination').value;
+            const checkin = document.getElementById('checkin').value;
+            const checkout = document.getElementById('checkout').value;
+            const guests = document.getElementById('guests').value;
+
+            if (!destination || !checkin || !checkout || !guests) {
+                alert('Por favor completa todos los campos de búsqueda');
+                return;
+            }
+
+            alert(`Buscando hoteles en ${destination} para ${guests} huéspedes\nDel ${checkin} al ${checkout}`);
+            
+            // Desplazar a la sección de hoteles
+            document.getElementById('hotels').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Función para reservar hotel
+        function bookHotel(hotelName) {
+            const modal = document.getElementById('bookingModal');
+            const message = document.getElementById('confirmationMessage');
+            
+            message.textContent = `Has reservado exitosamente en ${hotelName}. Te enviaremos un correo de confirmación pronto.`;
+            modal.style.display = 'flex';
+        }
+
+        // Función para cerrar el modal
+        function closeModal() {
+            const modal = document.getElementById('bookingModal');
+            modal.style.display = 'none';
+        }
+
+        // Cerrar modal al hacer clic fuera de él
+        window.onclick = function(event) {
+            const modal = document.getElementById('bookingModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
